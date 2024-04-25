@@ -19,7 +19,7 @@ def clear_console():
 
 def load_user_data():
     try:
-        with open('user_save.json', 'r') as file:
+        with open('user_data.json', 'r', encoding="UTF-8") as file:
             user_data = json.load(file)
         return user_data
     except FileNotFoundError:
@@ -28,16 +28,24 @@ def load_user_data():
 
 def save_user_data(user_data):
     save_counter = 1
-    while os.path.exists(f'user_save.{save_counter}.json'):
+    while os.path.exists(f'user_data.{save_counter}.json'):
         save_counter += 1
         if save_counter > 5:
-            os.remove(f'user_save.{save_counter - 5}.json')
-    with open(f'user_save.{save_counter}.json', 'w') as file:
+            os.remove(f'user_data.{save_counter - 5}.json')
+    with open(f'user_data.{save_counter}.json', 'w') as file:
         json.dump(user_data, file)
 
 def load_last_game():
     clear_console()
     print("Загружаю...")
+    time.sleep(1)
+    clear_console()
+    print("Инфо о персонаже")
+    user_data = load_user_data()
+    name = user_data.get('name', str)
+    print("имя: ", name)
+    a = input("\n")
+    Main()
 
 def load_new_game():
     clear_console()
@@ -102,7 +110,7 @@ def load_new_game():
 
         # Запись пользовательских данных в файл user_data.json
         user_data = {"character": character}
-        with open("user_data.json", "w") as file:
+        with open("user_data.json", "w", encoding="UTF-8") as file:
             json.dump(user_data, file)
 
         # Вывод информации о персонаже
@@ -149,7 +157,7 @@ def Main(): # Главная функция
         time.sleep(1)
         Main()
 
-    if user_choice == 1: # Тонна сравнений, лень урезать/убирать
+    if user_choice == 1: # Тонна 6, лень урезать/убирать
         load_last_game()
     elif user_choice == 2:
         load_new_game()
