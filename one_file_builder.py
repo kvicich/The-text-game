@@ -9,7 +9,7 @@ import shutil
 import subprocess
 import time
 print("Сборка начнётся через 3 секунды")
-time.sleep(5)
+time.sleep(3)
 clear_console()
 
 # Удаление старой папки dist и файла приложения, если они существуют
