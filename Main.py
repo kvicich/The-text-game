@@ -23,17 +23,15 @@ def load_user_data():
             user_data = json.load(file)
         return user_data
     except FileNotFoundError:
+        clear_console()
         print("Файл сохранения пользователя не найден.")
+        time.sleep(1)
         Main()
 
 def save_user_data(user_data):
-    save_counter = 1
-    while os.path.exists(f'user_data.{save_counter}.json'):
-        save_counter += 1
-        if save_counter > 5:
-            os.remove(f'user_data.{save_counter - 5}.json')
-    with open(f'user_data.{save_counter}.json', 'w') as file:
+    with open(f'user_data.json', 'w') as file:
         json.dump(user_data, file)
+        print("Ваши данные сохранены")
 
 def load_last_game():
     clear_console()
@@ -42,8 +40,33 @@ def load_last_game():
     clear_console()
     print("Инфо о персонаже")
     user_data = load_user_data()
-    name = user_data.get('name', str)
-    print("имя: ", name)
+    character_info = user_data.get('character', {})
+    name = character_info.get('name', 'Unknown')
+    health = character_info.get('health', 'Unknown')
+    strength = character_info.get('strength', 'Unknown')
+    agility = character_info.get('agility', 'Unknown')
+    steps = character_info.get('steps')
+    # Вывод информации о персонаже
+    print(f"Имя: {name}\nЗдоровье: {health}\nСила: {strength}\nЛовкость: {agility}")
+
+    if steps == 0:
+        print("Вы очнулись посреди ошмётков научной станции...")
+        time.sleep(2)
+        print("Оглядевшись и никого не увидив вы нашли в своём кармане бумажку...")
+        time.sleep(2)
+        user_choice = input("Прочитать? Да/Нет\n")
+        if user_choice == "Да":
+            time.sleep(1)
+            print("На бумаге были написаны координаты, вы решили пойти туда, спустя 2 часа вы увидели лагерь выживших.\n Вы всё таки осмелились туда пойти, через пару часов вы уже знали всех в этом лагере, тут и началась ваша история выживания...")
+            steps += 1
+            user_data['character']['steps'] = steps
+            save_user_data(user_data)
+        elif user_choice == "Нет":
+            print("Это было раковой ошибкой.\n Спустя несколько часов скитания по обломкам вы начали терять надежду.\n Еще через пару часов на вас упала одна из балок, придавив вас, на ваши крики пришёл только местный медведь. \n Медведь вкусно пообедал, а вы умерли")
+            os.remove('user_data.json')
+        else: 
+            print("Некорректный выбор.")
+            exit()
     a = input("\n")
     Main()
 
@@ -90,18 +113,22 @@ def load_new_game():
             health = random.randint(50, 70)
             strength = random.randint(30, 50)
             agility = random.randint(40, 60)
+            money = random.randint(100, 200)
         elif difficulty == "normal":
             health = random.randint(40, 60)
             strength = random.randint(40, 60)
             agility = random.randint(40, 60)
+            money = random.randint(70, 150)
         elif difficulty == "hard":
             health = random.randint(30, 50)
             strength = random.randint(50, 70)
             agility = random.randint(30, 50)
+            money = random.randint(0, 100)
 
         # Создание словаря с характеристиками персонажа
         character = {
             "name": name + " " + subname,
+            "money": money,
             "health": health,
             "strength": strength,
             "agility": agility,
