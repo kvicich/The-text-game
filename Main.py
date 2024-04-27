@@ -7,7 +7,7 @@ import json
 import random
 
 # Переменные
-version = "0.03"
+version = "0.04"
 story_file = "res/story.txt"
 
 def clear_console():
@@ -133,18 +133,18 @@ def load_new_game():
 
         # Определение характеристик в зависимости от сложности
         if difficulty == "easy":
-            health = random.randint(50, 70)
-            strength = random.randint(30, 50)
-            agility = random.randint(40, 60)
+            health = random.randint(70, 100)
+            strength = random.randint(60, 100)
+            agility = random.randint(50, 100)
             money = random.randint(100, 200)
         elif difficulty == "normal":
-            health = random.randint(40, 60)
-            strength = random.randint(40, 60)
-            agility = random.randint(40, 60)
+            health = random.randint(40, 70)
+            strength = random.randint(40, 70)
+            agility = random.randint(40, 70)
             money = random.randint(70, 150)
         elif difficulty == "hard":
             health = random.randint(30, 50)
-            strength = random.randint(50, 70)
+            strength = random.randint(20, 50)
             agility = random.randint(30, 50)
             money = random.randint(0, 100)
 
