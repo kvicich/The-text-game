@@ -7,8 +7,8 @@ import json
 import random
 
 # Переменные
-version = "0.02"
-story_file = "story.txt"
+version = "0.03"
+story_file = "res/story.txt"
 
 def clear_console():
     os_name = os.name
@@ -19,7 +19,7 @@ def clear_console():
 
 def load_user_data():
     try:
-        with open('user_data.json', 'r', encoding="UTF-8") as file:
+        with open('res/user/user_data.json', 'r', encoding="UTF-8") as file:
             user_data = json.load(file)
         return user_data
     except FileNotFoundError:
@@ -29,46 +29,69 @@ def load_user_data():
         Main()
 
 def save_user_data(user_data):
-    with open(f'user_data.json', 'w') as file:
-        json.dump(user_data, file)
-        print("Ваши данные сохранены")
+    try:
+        with open(f'res/user/user_data.json', 'w') as file:
+            json.dump(user_data, file)
+            print("Ваши данные сохранены")
+    except Exception as e:
+        print(f"Ошибка при сохранении данных пользователя: {e}")
+
+def load_cog_data(file_path, file):
+    with open(f'{file_path}{file}', 'r', encoding='UTF-8') as f:
+        cog_data = f.read()
+    return cog_data
 
 def load_last_game():
-    clear_console()
-    print("Загружаю...")
-    time.sleep(1)
-    clear_console()
-    print("Инфо о персонаже")
-    user_data = load_user_data()
-    character_info = user_data.get('character', {})
-    name = character_info.get('name', 'Unknown')
-    health = character_info.get('health', 'Unknown')
-    strength = character_info.get('strength', 'Unknown')
-    agility = character_info.get('agility', 'Unknown')
-    steps = character_info.get('steps')
-    # Вывод информации о персонаже
-    print(f"Имя: {name}\nЗдоровье: {health}\nСила: {strength}\nЛовкость: {agility}")
-
-    if steps == 0:
-        print("Вы очнулись посреди ошмётков научной станции...")
-        time.sleep(2)
-        print("Оглядевшись и никого не увидив вы нашли в своём кармане бумажку...")
-        time.sleep(2)
-        user_choice = input("Прочитать? Да/Нет\n")
-        if user_choice == "Да":
-            time.sleep(1)
-            print("На бумаге были написаны координаты, вы решили пойти туда, спустя 2 часа вы увидели лагерь выживших.\n Вы всё таки осмелились туда пойти, через пару часов вы уже знали всех в этом лагере, тут и началась ваша история выживания...")
-            steps += 1
-            user_data['character']['steps'] = steps
-            save_user_data(user_data)
-        elif user_choice == "Нет":
-            print("Это было раковой ошибкой.\n Спустя несколько часов скитания по обломкам вы начали терять надежду.\n Еще через пару часов на вас упала одна из балок, придавив вас, на ваши крики пришёл только местный медведь. \n Медведь вкусно пообедал, а вы умерли")
-            os.remove('user_data.json')
-        else: 
-            print("Некорректный выбор.")
+    while True:
+        clear_console()
+        print("Загружаю...")
+        user_data = load_user_data()
+        character_info = user_data.get('character', {})
+        name = character_info.get('name', 'Unknown')
+        money = character_info.get('money', 'Unknown')
+        health = character_info.get('health', 'Unknown')
+        strength = character_info.get('strength', 'Unknown')
+        agility = character_info.get('agility', 'Unknown')
+        steps = character_info.get('steps')
+        clear_console()
+        print("Инфо о персонаже")
+        # Вывод информации о персонаже
+        print(f"Имя: {name}\nМонеты: {money}\nЗдоровье: {health}\nСила: {strength}\nЛовкость: {agility}")
+        exit_1 = input("Чтобы выйти из игры нажмите 5: ").strip()
+        if exit_1 == "5":
             exit()
-    a = input("\n")
-    Main()
+        event_randomizer()
+
+def event_randomizer():
+    clear_console()
+    user_data = load_user_data()
+    steps = user_data.get('character', {}).get('steps', 0)
+
+    # Пока не будет выполнено условие (steps != 0 и выбранный файл не start_event.py), продолжаем выбор случайного файла
+    while True:
+        # Если количество шагов равно 0, загружаем и выполняем start_event.py
+        if steps == 0:
+            file_path = 'res/event/'
+            start_event_file = 'start_event.py'
+            start_event_code = load_cog_data(file_path, start_event_file)
+            exec(start_event_code, globals(), locals())
+            break
+        
+        # Получаем список всех файлов в директории res/event/
+        event_files = [file for file in os.listdir('res/event/') if file.endswith('.py')]
+        
+        # Если файл start_event.py есть в списке, удаляем его
+        if 'start_event.py' in event_files:
+            event_files.remove('start_event.py')
+
+        # Если список файлов не пуст и все они не start_event.py, выбираем случайный файл и загружаем его
+        if event_files:
+            random_event_file = random.choice(event_files)
+            file_path = 'res/event/'
+            cog_data = load_cog_data(file_path, random_event_file)
+            exec(cog_data, globals(), locals())
+            break
+
 
 def load_new_game():
     clear_console()
@@ -101,9 +124,9 @@ def load_new_game():
             continue
 
         # Генерация имени персонажа
-        with open('names.txt', 'r', encoding='utf-8') as file:
+        with open('res/names.txt', 'r', encoding='utf-8') as file:
             names = file.readlines()
-        with open('subnames.txt', 'r', encoding='utf-8') as file:
+        with open('res/subnames.txt', 'r', encoding='utf-8') as file:
             subnames = file.readlines()
         name = random.choice(names).strip()
         subname = random.choice(subnames).strip()
@@ -137,7 +160,7 @@ def load_new_game():
 
         # Запись пользовательских данных в файл user_data.json
         user_data = {"character": character}
-        with open("user_data.json", "w", encoding="UTF-8") as file:
+        with open("res/user/user_data.json", "w", encoding="UTF-8") as file:
             json.dump(user_data, file)
 
         # Вывод информации о персонаже
