@@ -84,6 +84,8 @@ def event_randomizer():
         # Если файл start_event.py есть в списке, удаляем его
         if 'start_event.py' in event_files:
             event_files.remove('start_event.py')
+        if 'last_event.py' in event_files:
+            event_files.remove('last_event.py')
 
         # Если список файлов не пуст и все они не start_event.py, выбираем случайный файл и загружаем его
         if event_files:
