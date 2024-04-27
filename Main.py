@@ -58,9 +58,9 @@ def load_last_game():
         print("Инфо о персонаже")
         # Вывод информации о персонаже
         print(f"Имя: {name}\nМонеты: {money}\nСхемы {scheme}\nЗдоровье: {health}\nСила: {strength}\nЛовкость: {agility}\nШаги: {steps}")
-        exit_1 = input("Чтобы выйти из игры нажмите 5: ").strip()
-        if exit_1 == "5":
-            exit()
+        main_1 = input("Чтобы перейти в главное меню нажмите 5: ").strip()
+        if main_1 == "5":
+            Main()
         event_randomizer()
 
 def event_randomizer():
