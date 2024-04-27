@@ -7,7 +7,7 @@ import json
 import random
 
 # Переменные
-version = "0.03"
+version = "0.04"
 story_file = "res/story.txt"
 
 def clear_console():
@@ -53,13 +53,14 @@ def load_last_game():
         strength = character_info.get('strength', 'Unknown')
         agility = character_info.get('agility', 'Unknown')
         steps = character_info.get('steps')
+        scheme = character_info.get('scheme')
         clear_console()
         print("Инфо о персонаже")
         # Вывод информации о персонаже
-        print(f"Имя: {name}\nМонеты: {money}\nЗдоровье: {health}\nСила: {strength}\nЛовкость: {agility}")
-        exit_1 = input("Чтобы выйти из игры нажмите 5: ").strip()
-        if exit_1 == "5":
-            exit()
+        print(f"Имя: {name}\nМонеты: {money}\nСхемы {scheme}\nЗдоровье: {health}\nСила: {strength}\nЛовкость: {agility}\nШаги: {steps}")
+        main_1 = input("Чтобы перейти в главное меню нажмите 5: ").strip()
+        if main_1 == "5":
+            Main()
         event_randomizer()
 
 def event_randomizer():
@@ -133,18 +134,18 @@ def load_new_game():
 
         # Определение характеристик в зависимости от сложности
         if difficulty == "easy":
-            health = random.randint(50, 70)
-            strength = random.randint(30, 50)
-            agility = random.randint(40, 60)
+            health = random.randint(70, 100)
+            strength = random.randint(60, 100)
+            agility = random.randint(50, 100)
             money = random.randint(100, 200)
         elif difficulty == "normal":
-            health = random.randint(40, 60)
-            strength = random.randint(40, 60)
-            agility = random.randint(40, 60)
+            health = random.randint(40, 70)
+            strength = random.randint(40, 70)
+            agility = random.randint(40, 70)
             money = random.randint(70, 150)
         elif difficulty == "hard":
             health = random.randint(30, 50)
-            strength = random.randint(50, 70)
+            strength = random.randint(20, 50)
             agility = random.randint(30, 50)
             money = random.randint(0, 100)
 
@@ -155,7 +156,8 @@ def load_new_game():
             "health": health,
             "strength": strength,
             "agility": agility,
-            "steps": 0  # Устанавливаем количество шагов на 0
+            "steps": 0,  # Устанавливаем количество шагов на 0
+            "scheme": 0
         }
 
         # Запись пользовательских данных в файл user_data.json

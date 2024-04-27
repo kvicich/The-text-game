@@ -16,6 +16,7 @@ if user_choice == "1":
         time.sleep(1)
         print("Вас съели...")
         os.remove("res/user/user_data.json")
+        a = input()
     else:
         print("Вам удалось отбится но вас поцарапали.\n -10 hp + 3 strength")
         health -= 10
@@ -25,12 +26,14 @@ if user_choice == "1":
         user_data['character']['health'] = health
         user_data['character']['strength'] = strength
         save_user_data(user_data)
+        a = input()
 elif user_choice == "2":
     if agility < 10:
         print("Вам удалось убежать.\n + 3 agility")
         agility += 3
         user_data['character']['agility'] = agility
         save_user_data(user_data)
+        a = input()
 
 
 

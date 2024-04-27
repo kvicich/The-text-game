@@ -10,9 +10,12 @@ if steps == 0:
         steps += 1
         user_data['character']['steps'] = steps
         save_user_data(user_data)
+        a = input()
     elif user_choice == "Нет":
         print("Это было раковой ошибкой.\n Спустя несколько часов скитания по обломкам вы начали терять надежду.\n Еще через пару часов на вас упала одна из балок, придавив вас, на ваши крики пришёл только местный медведь. \n Медведь вкусно пообедал, а вы умерли")
         os.remove('res/user/user_data.json')
+        a = input()
     else: 
         print("Некорректный выбор.")
+        time.sleep(2)
         exit()
