@@ -53,10 +53,11 @@ def load_last_game():
         strength = character_info.get('strength', 'Unknown')
         agility = character_info.get('agility', 'Unknown')
         steps = character_info.get('steps')
+        scheme = character_info.get('scheme')
         clear_console()
         print("Инфо о персонаже")
         # Вывод информации о персонаже
-        print(f"Имя: {name}\nМонеты: {money}\nЗдоровье: {health}\nСила: {strength}\nЛовкость: {agility}")
+        print(f"Имя: {name}\nМонеты: {money}\nСхемы {scheme}\nЗдоровье: {health}\nСила: {strength}\nЛовкость: {agility}\nШаги: {steps}")
         exit_1 = input("Чтобы выйти из игры нажмите 5: ").strip()
         if exit_1 == "5":
             exit()
@@ -155,7 +156,8 @@ def load_new_game():
             "health": health,
             "strength": strength,
             "agility": agility,
-            "steps": 0  # Устанавливаем количество шагов на 0
+            "steps": 0,  # Устанавливаем количество шагов на 0
+            "scheme": 0
         }
 
         # Запись пользовательских данных в файл user_data.json
