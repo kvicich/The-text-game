@@ -34,6 +34,15 @@ elif user_choice == "2":
         user_data['character']['agility'] = agility
         save_user_data(user_data)
         a = input()
+elif user_choice == "3":
+    print("Ты и правда думал что это поможет?")
+    time.sleep(1)
+    print("Вы умерли")
+    os.remove("res/user/user_data.json")
+else: 
+    print("Некорректный выбор!!!")
+    time.sleep(3)
+    Main()
 
 
 
