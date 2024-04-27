@@ -67,6 +67,7 @@ def event_randomizer():
     clear_console()
     user_data = load_user_data()
     steps = user_data.get('character', {}).get('steps', 0)
+    scheme = user_data.get('character', {}).get('scheme', 0)
 
     # Пока не будет выполнено условие (steps != 0 и выбранный файл не start_event.py), продолжаем выбор случайного файла
     while True:
@@ -74,6 +75,14 @@ def event_randomizer():
         if steps == 0:
             file_path = 'res/event/'
             start_event_file = 'start_event.py'
+            start_event_code = load_cog_data(file_path, start_event_file)
+            exec(start_event_code, globals(), locals())
+            break
+
+        # Если количество схем равно 100, загружаем и выполняем last_event.py
+        if scheme == 100:
+            file_path = 'res/event/'
+            start_event_file = 'last_event.py'
             start_event_code = load_cog_data(file_path, start_event_file)
             exec(start_event_code, globals(), locals())
             break
