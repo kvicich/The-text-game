@@ -7,7 +7,7 @@ import json
 import random
 
 # Переменные
-version = "0.04"
+version = "0.5b"
 story_file = "res/story.txt"
 
 def clear_console():
@@ -54,6 +54,16 @@ def load_last_game():
         agility = character_info.get('agility', 'Unknown')
         steps = character_info.get('steps')
         scheme = character_info.get('scheme')
+        if health > 100:
+            health = 100
+            user_data['character']['health'] = health
+        if strength > 100:
+            strength = 100
+            user_data['character']['strength'] = strength
+        if agility > 100:
+            agility = 100
+            user_data['character']['agility'] = agility
+        save_user_data(user_data)
         clear_console()
         print("Инфо о персонаже")
         # Вывод информации о персонаже
@@ -67,6 +77,7 @@ def event_randomizer():
     clear_console()
     user_data = load_user_data()
     steps = user_data.get('character', {}).get('steps', 0)
+    scheme = user_data.get('character', {}).get('scheme', 0)
 
     # Пока не будет выполнено условие (steps != 0 и выбранный файл не start_event.py), продолжаем выбор случайного файла
     while True:
@@ -77,6 +88,14 @@ def event_randomizer():
             start_event_code = load_cog_data(file_path, start_event_file)
             exec(start_event_code, globals(), locals())
             break
+
+        # Если количество схем равно 100, загружаем и выполняем last_event.py
+        if scheme == 100:
+            file_path = 'res/event/'
+            start_event_file = 'last_event.py'
+            start_event_code = load_cog_data(file_path, start_event_file)
+            exec(start_event_code, globals(), locals())
+            break
         
         # Получаем список всех файлов в директории res/event/
         event_files = [file for file in os.listdir('res/event/') if file.endswith('.py')]
@@ -84,6 +103,8 @@ def event_randomizer():
         # Если файл start_event.py есть в списке, удаляем его
         if 'start_event.py' in event_files:
             event_files.remove('start_event.py')
+        if 'last_event.py' in event_files:
+            event_files.remove('last_event.py')
 
         # Если список файлов не пуст и все они не start_event.py, выбираем случайный файл и загружаем его
         if event_files:
@@ -92,7 +113,6 @@ def event_randomizer():
             cog_data = load_cog_data(file_path, random_event_file)
             exec(cog_data, globals(), locals())
             break
-
 
 def load_new_game():
     clear_console()
@@ -136,8 +156,8 @@ def load_new_game():
         if difficulty == "easy":
             health = random.randint(70, 100)
             strength = random.randint(60, 100)
-            agility = random.randint(50, 100)
-            money = random.randint(100, 200)
+            agility = random.randint(55, 100)
+            money = random.randint(130, 250)
         elif difficulty == "normal":
             health = random.randint(40, 70)
             strength = random.randint(40, 70)
@@ -180,11 +200,6 @@ def load_new_game():
     # Вызов функции загрузки последней игры
     load_last_game()
 
-def settings():
-    print("     Настройки     ")
-    a = input()
-    Main()
-
 def exit():
     print("Выходим...\n Подождите 3 секунды...")
     time.sleep(3)
@@ -198,8 +213,7 @@ def Main(): # Главная функция
                         "1) Загрузить текущую игру\n"
                         "2) Начать заново\n"
                         "3) Сюжет\n"
-                        "4) Настройки\n"
-                        "5) Выход\n")
+                        "4) Выход\n")
     
     try: # Пытаемся превратить переменную в строку дабы исключить постоянный неправильный выбор
         user_choice = int(user_choice)
@@ -209,7 +223,7 @@ def Main(): # Главная функция
         time.sleep(1)
         Main()
 
-    if user_choice == 1: # Тонна 6, лень урезать/убирать
+    if user_choice == 1: # Тонна сравнений, лень урезать/убирать
         load_last_game()
     elif user_choice == 2:
         load_new_game()
@@ -217,7 +231,7 @@ def Main(): # Главная функция
         try:
             with open(story_file, 'r', encoding="UTF-8") as file:
                 story_text = file.read()
-                print("                                                             Сюжет")
+                print("                                                           Сюжет")
                 print(story_text)
                 a = input()
                 Main()
@@ -226,8 +240,6 @@ def Main(): # Главная функция
             a = input()
             Main()
     elif user_choice == 4:
-        settings()
-    elif user_choice == 5:
         exit()
     else:
         clear_console()
