@@ -7,7 +7,7 @@ agility = character_info.get('agility', 'Unknown')
 steps = character_info.get('steps')
 scheme = character_info.get('scheme')
 print("Неподалёку упал воздушный груз")
-user_choice = input("Что ты выберешь?\n1) Пойду и заберу всё что там есть\n2) У меня своих дел полно, пропущу\n3) Осторожно подберусь, убью всех кому груз так-же интересен и спокойно всё заберу")
+user_choice = input("Что ты выберешь?\n1) Пойду и заберу всё что там есть\n2) У меня своих дел полно, пропущу\n3) Осторожно подберусь, убью всех кому груз так-же интересен и спокойно всё заберу\n")
 if user_choice == "1":
     luck = random.choice([True, False])
     if luck == True:
