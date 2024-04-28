@@ -13,10 +13,10 @@ if user_choice == "1":
     if luck == True:
         print("Удача на вашей стороне!")
         time.sleep(1)
-        print("Вы успешно обнесли воздушный груз!\n +150 money +3 scheme")
         steps += 1
-        scheme += 1
-        money += 150
+        scheme += random.randint(0, 3)
+        money += random.randint(10,300)
+        print(f"Вы успешно обнесли воздушный груз!\n +{money} money +{scheme} scheme")
         user_data['character']['steps'] = steps
         user_data['character']['scheme'] = scheme
         user_data['character']['money'] = money
