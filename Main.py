@@ -215,19 +215,11 @@ def Main(): # Главная функция
                         "3) Сюжет\n"
                         "4) Выход\n")
     
-    try: # Пытаемся превратить переменную в строку дабы исключить постоянный неправильный выбор
-        user_choice = int(user_choice)
-    except ValueError:
-        clear_console()
-        print("Некорректный выбор! Возвращаемся в главное меню...")
-        time.sleep(1)
-        Main()
-
-    if user_choice == 1: # Тонна сравнений, лень урезать/убирать
+    if user_choice == "1": # Тонна сравнений, лень урезать/убирать
         load_last_game()
-    elif user_choice == 2:
+    elif user_choice == "2":
         load_new_game()
-    elif user_choice == 3:
+    elif user_choice == "3":
         try:
             with open(story_file, 'r', encoding="UTF-8") as file:
                 story_text = file.read()
@@ -239,7 +231,7 @@ def Main(): # Главная функция
             print(f"Файл '{story_file}' не найден.")
             a = input()
             Main()
-    elif user_choice == 4:
+    elif user_choice == "4":
         exit()
     else:
         clear_console()
