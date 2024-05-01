@@ -7,17 +7,17 @@ import json
 import random
 
 # Переменные
-version = "0.5b"
-story_file = "res/story.txt"
+version = "0.5b" # Версия игры, не забывайте её обновлять
+story_file = "res/story.txt" # Один раз укажите если будете менять папку с ресурсами, и забейте хер
 
 def clear_console():
-    os_name = os.name
+    os_name = os.name # Узнаём имя операционки
     if os_name == 'nt':  # Windows
         os.system('cls')
     else:  # Unix/Linux/MacOS
         os.system('clear')
 
-def load_user_data():
+def load_user_data(): # Загружаем юзердату
     try:
         with open('res/user/user_data.json', 'r', encoding="UTF-8") as file:
             user_data = json.load(file)
@@ -28,7 +28,7 @@ def load_user_data():
         time.sleep(1)
         Main()
 
-def save_user_data(user_data):
+def save_user_data(user_data): # Сохраняем юзердату
     try:
         with open(f'res/user/user_data.json', 'w') as file:
             json.dump(user_data, file)
@@ -36,7 +36,7 @@ def save_user_data(user_data):
     except Exception as e:
         print(f"Ошибка при сохранении данных пользователя: {e}")
 
-def load_cog_data(file_path, file):
+def load_cog_data(file_path, file): # Грузим ивентики
     with open(f'{file_path}{file}', 'r', encoding='UTF-8') as f:
         cog_data = f.read()
     return cog_data
@@ -45,7 +45,7 @@ def load_last_game():
     while True:
         clear_console()
         print("Загружаю...")
-        user_data = load_user_data()
+        user_data = load_user_data() # Получаем всю юзердату чтобы просто отобразить её
         character_info = user_data.get('character', {})
         name = character_info.get('name', 'Unknown')
         money = character_info.get('money', 'Unknown')
@@ -54,7 +54,7 @@ def load_last_game():
         agility = character_info.get('agility', 'Unknown')
         steps = character_info.get('steps')
         scheme = character_info.get('scheme')
-        if health > 100:
+        if health > 100: # Не будет вам 500 здоровья
             health = 100
             user_data['character']['health'] = health
         if strength > 100:
@@ -73,7 +73,7 @@ def load_last_game():
             Main()
         event_randomizer()
 
-def event_randomizer():
+def event_randomizer(): # Второй кусок кода на котором держится игра
     clear_console()
     user_data = load_user_data()
     steps = user_data.get('character', {}).get('steps', 0)
@@ -115,7 +115,7 @@ def event_randomizer():
             break
 
 def load_new_game():
-    clear_console()
+    clear_console() # Моя спасительница
     checker = input("Вы уверены?\n Да\n Нет\n")
     if checker == 'Да':
         print("Загружаю...")
@@ -153,6 +153,7 @@ def load_new_game():
         subname = random.choice(subnames).strip()
 
         # Определение характеристик в зависимости от сложности
+        # Пиздец дохуя кода тут
         if difficulty == "easy":
             health = random.randint(70, 100)
             strength = random.randint(60, 100)
@@ -176,7 +177,7 @@ def load_new_game():
             "health": health,
             "strength": strength,
             "agility": agility,
-            "steps": 0,  # Устанавливаем количество шагов на 0
+            "steps": 0,  # Обязательно ставьте кол-во шагов на ноль если не хотите пропустить стартовый ивент
             "scheme": 0
         }
 
@@ -200,7 +201,7 @@ def load_new_game():
     # Вызов функции загрузки последней игры
     load_last_game()
 
-def exit():
+def exit(): # Функция для выхода
     print("Выходим...\n Подождите 3 секунды...")
     time.sleep(3)
     sys.exit()
@@ -215,15 +216,15 @@ def Main(): # Главная функция
                         "3) Сюжет\n"
                         "4) Выход\n")
     
-    if user_choice == "1": # Тонна сравнений, лень урезать/убирать
+    if user_choice == "1": # Тонна сравнений
         load_last_game()
-    elif user_choice == "2":
+    elif user_choice == "2": # Функция для создания новой игры
         load_new_game()
     elif user_choice == "3":
-        try:
+        try: # Грузим сюжитик
             with open(story_file, 'r', encoding="UTF-8") as file:
                 story_text = file.read()
-                print("                                                           Сюжет")
+                print("Сюжет")
                 print(story_text)
                 a = input()
                 Main()
@@ -237,7 +238,7 @@ def Main(): # Главная функция
         clear_console()
         print("Некорректный выбор!\n Возвращаемся в главное меню...")
         time.sleep(1)
-        Main()
+        Main() # Рекурсия подъехала
 
-if __name__ == "__main__":
+if __name__ == "__main__": # На этих двух строчках кода держится вся игра
     Main()
