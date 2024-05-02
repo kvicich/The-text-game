@@ -9,6 +9,7 @@ import random
 # Переменные
 version = "1.0" # Версия игры, не забывайте её обновлять
 story_file = "res/story.txt" # Один раз укажите если будете менять папку с ресурсами, и забейте хер
+user_data_path = "res/user/user_data.json" # Тут сохраняем папку с юзердатой
 
 def clear_console():
     os_name = os.name # Узнаём имя операционки
@@ -16,6 +17,16 @@ def clear_console():
         os.system('cls')
     else:  # Unix/Linux/MacOS
         os.system('clear')
+
+def load_splash():
+    # Выбираем рандомный загрузочный сплеш
+    with open('res/splashes.txt', 'r', encoding='utf-8') as file:
+        splashes = file.readlines()
+    splash = random.choice(splashes).strip()
+    print(splash)
+
+load_splash()
+time.sleep(5)
 
 def load_user_data(): # Загружаем юзердату
     try:
@@ -25,12 +36,12 @@ def load_user_data(): # Загружаем юзердату
     except FileNotFoundError:
         clear_console()
         print("Файл сохранения пользователя не найден.")
-        time.sleep(1)
+        time.sleep(1) 
         Main()
 
 def save_user_data(user_data): # Сохраняем юзердату
     try:
-        with open(f'res/user/user_data.json', 'w') as file:
+        with open(user_data_path, 'w') as file:
             json.dump(user_data, file)
             print("Ваши данные сохранены")
     except Exception as e:
@@ -44,7 +55,7 @@ def load_cog_data(file_path, file): # Грузим ивентики
 def load_last_game():
     while True:
         clear_console()
-        print("Загружаю...")
+        load_splash()
         user_data = load_user_data() # Получаем всю юзердату чтобы просто отобразить её
         character_info = user_data.get('character', {})
         name = character_info.get('name', 'Unknown')
@@ -88,6 +99,12 @@ def event_randomizer(): # Второй кусок кода на котором �
             start_event_code = load_cog_data(file_path, start_event_file)
             exec(start_event_code, globals(), locals())
             break
+                
+        if steps > 100:
+            print("Вам незачем играть дальше")
+            print("Дискорд проекта этого и многих других моих проектов: https://dsc.gg/xkwg3e2wUX")
+            a = input()
+            Main()
 
         # Если количество схем равно 100, загружаем и выполняем last_event.py
         if scheme == 100:
@@ -96,12 +113,6 @@ def event_randomizer(): # Второй кусок кода на котором �
             start_event_code = load_cog_data(file_path, start_event_file)
             exec(start_event_code, globals(), locals())
             break
-
-        if steps > 100:
-            print("Вам незачем играть дальше")
-            print("Дискорд проекта этого и многих других моих проектов: xkwg3e2wUX")
-            a = input()
-            Main()
         
         # Получаем список всех файлов в директории res/event/
         event_files = [file for file in os.listdir('res/event/') if file.endswith('.py')]
@@ -124,7 +135,7 @@ def load_new_game():
     clear_console() # Моя спасительница
     checker = input("Вы уверены?\n Да\n Нет\n")
     if checker == 'Да':
-        print("Загружаю...")
+        load_splash
         time.sleep(1)
     elif checker == 'Нет':
         print("Возвращаюсь в главное меню...")
@@ -189,7 +200,7 @@ def load_new_game():
 
         # Запись пользовательских данных в файл user_data.json
         user_data = {"character": character}
-        with open("res/user/user_data.json", "w", encoding="UTF-8") as file:
+        with open(user_data_path, "w", encoding="UTF-8") as file:
             json.dump(user_data, file)
 
         # Вывод информации о персонаже
