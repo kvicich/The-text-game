@@ -23,6 +23,14 @@ elif user_choice1984 == "2":
     print("Ампула оказалась с ядом, вы умерли")
     os.remove("res/user/user_data.json")
     a = input()
+elif user_choice1984 =="3":
+    print("Да и не надо оно мне...")
+    time.sleep(1)
+    print("Вы пропустили аптечку, может это и к лучшему")
+    steps += 1
+    user_data['character']['steps'] = steps
+    save_user_data(user_data)
+    a = input()
 else:
     print("Некорректный выбор")
     time.sleep(2)

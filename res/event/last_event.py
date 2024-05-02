@@ -36,3 +36,11 @@ elif user_last_choice == "3":
     print("А после вы были уничтожены")
     os.remove("res/user/user_data.json")
     a = input()
+else:
+    time.sleep(3)
+    print("Ну и зачем?")
+    time.sleep(5)
+    print("Ваши данные удалены.\nУдачи!")
+    os.remove("res/user/user_data.json")
+    time.sleep(1)
+    exit()
