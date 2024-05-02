@@ -10,6 +10,7 @@ import random
 version = "1.0" # Версия игры, не забывайте её обновлять
 story_file = "res/story.txt" # Один раз укажите если будете менять папку с ресурсами, и забейте хер
 user_data_path = "res/user/user_data.json" # Тут сохраняем папку с юзердатой
+splash_file = "res/splashes.txt"
 
 def clear_console():
     os_name = os.name # Узнаём имя операционки
@@ -20,7 +21,7 @@ def clear_console():
 
 def load_splash():
     # Выбираем рандомный загрузочный сплеш
-    with open('res/splashes.txt', 'r', encoding='utf-8') as file:
+    with open(splash_file, 'r', encoding='utf-8') as file:
         splashes = file.readlines()
     splash = random.choice(splashes).strip()
     print(splash)
@@ -30,7 +31,7 @@ time.sleep(5)
 
 def load_user_data(): # Загружаем юзердату
     try:
-        with open('res/user/user_data.json', 'r', encoding="UTF-8") as file:
+        with open(user_data_path, 'r', encoding="UTF-8") as file:
             user_data = json.load(file)
         return user_data
     except FileNotFoundError:
@@ -55,7 +56,6 @@ def load_cog_data(file_path, file): # Грузим ивентики
 def load_last_game():
     while True:
         clear_console()
-        load_splash()
         user_data = load_user_data() # Получаем всю юзердату чтобы просто отобразить её
         character_info = user_data.get('character', {})
         name = character_info.get('name', 'Unknown')
@@ -76,6 +76,9 @@ def load_last_game():
             user_data['character']['agility'] = agility
         save_user_data(user_data)
         clear_console()
+        load_splash()
+        time.sleep(3)
+        clear_console()
         print("Инфо о персонаже")
         # Вывод информации о персонаже
         print(f"Имя: {name}\nМонеты: {money}\nСхемы {scheme}\nЗдоровье: {health}\nСила: {strength}\nЛовкость: {agility}\nШаги: {steps}")
@@ -86,6 +89,7 @@ def load_last_game():
 
 def event_randomizer(): # Второй кусок кода на котором держится игра
     clear_console()
+    load_splash()
     user_data = load_user_data()
     steps = user_data.get('character', {}).get('steps', 0)
     scheme = user_data.get('character', {}).get('scheme', 0)
@@ -97,6 +101,7 @@ def event_randomizer(): # Второй кусок кода на котором �
             file_path = 'res/event/'
             start_event_file = 'start_event.py'
             start_event_code = load_cog_data(file_path, start_event_file)
+            clear_console()
             exec(start_event_code, globals(), locals())
             break
                 
@@ -111,6 +116,7 @@ def event_randomizer(): # Второй кусок кода на котором �
             file_path = 'res/event/'
             start_event_file = 'last_event.py'
             start_event_code = load_cog_data(file_path, start_event_file)
+            clear_console()
             exec(start_event_code, globals(), locals())
             break
         
@@ -128,6 +134,7 @@ def event_randomizer(): # Второй кусок кода на котором �
             random_event_file = random.choice(event_files)
             file_path = 'res/event/'
             cog_data = load_cog_data(file_path, random_event_file)
+            clear_console()
             exec(cog_data, globals(), locals())
             break
 
