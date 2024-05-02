@@ -6,7 +6,7 @@ strength = character_info.get('strength', 'Unknown')
 money = character_info.get('money', 'Unknown')
 steps = character_info.get('steps')
 print("Вы встретили торговца из дружественной фракции")
-user_choice = input("Он показал вам свои товары, что вы купите:\n1) Аптечку\n2) Банку протеина\n3) Ничего")
+user_choice = input("Он показал вам свои товары, что вы купите:\n1) Аптечку\n2) Банку протеина\n3) Ничего\n")
 if user_choice == "1":
     time.sleep(1)
     print("Вы восстановили здоровье.\n +50 health, -100 money")

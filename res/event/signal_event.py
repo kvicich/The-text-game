@@ -3,6 +3,7 @@ user_data = load_user_data()
 character_info = user_data.get('character', {})
 steps = character_info.get('steps')
 scheme = character_info.get('scheme')
+money = character_info.get('money')
 
 print("Внезапно вы начинаете получать странный сигнал в своем устройстве.")
 time.sleep(0.8)
@@ -20,11 +21,13 @@ if user_choice == "1":
     time.sleep(0.5)
     print("Сигнал, оказывается, идет из старой записи, содержащей координаты крупного запаса ресурсов.")
     time.sleep(3)
-    print("Вы сохраняете координаты и отправляетесь на поиски ресурсов.\n +1 scheme")
+    print("Вы сохраняете координаты и отправляетесь на поиски ресурсов.\n +1 scheme, +100 money")
     steps += 1
     scheme += 1
+    money += 100
     user_data['character']['steps'] = steps
     user_data['character']['scheme'] = scheme
+    user_data['character']['money'] = money
     save_user_data(user_data)
     a = input()
 elif user_choice == "2":

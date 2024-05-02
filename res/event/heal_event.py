@@ -8,7 +8,7 @@ steps = character_info.get('steps')
 print("Вы нашли аптечку, что вы выберете?")
 user_choice1984 = input("1) Взять бинт\n"
                         "2) Взять ампулу\n"
-                        "3) Ничего не брать")
+                        "3) Ничего не брать\n")
                         
 time.sleep(1)
 if user_choice1984 == "1":

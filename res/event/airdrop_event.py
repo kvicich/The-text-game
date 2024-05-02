@@ -21,6 +21,7 @@ if user_choice == "1":
         user_data['character']['scheme'] = scheme
         user_data['character']['money'] = money
         save_user_data(user_data)
+        a = input()
     elif luck == False:
         print("Там была засада!\nВас подстрелили!\nВы кое как убежали\n -70 health")
         time.sleep(1)
