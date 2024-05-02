@@ -3,8 +3,7 @@ user_data = load_user_data()
 character_info = user_data.get('character', {})
 steps = character_info.get('steps')
 scheme = character_info.get('scheme')
-print("В вашем пути возникает старый заброшенный склад 'Новой Эры'.")
-print("Известно, что здесь могут храниться ценные ресурсы и информация.")
+print("На вашем пути появляется старый заброшенный склад 'Новой Эры'.")
 user_choice = input("Что вы сделаете?\n"
                     "1) Разыскать способ войти в склад и исследовать его.\n"
                     "2) Обойти склад и не рисковать.\n")

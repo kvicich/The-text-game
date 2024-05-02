@@ -5,9 +5,10 @@ health = character_info.get('health', 'Unknown')
 strength = character_info.get('strength', 'Unknown')
 agility = character_info.get('agility', 'Unknown')
 steps = character_info.get('steps')
-print("Вы нашли аптечку, выберите что-то")
+print("Вы нашли аптечку, что вы выберете?")
 user_choice1984 = input("1) Взять бинт\n"
-                        "2) Взять ампулу\n")
+                        "2) Взять ампулу\n"
+                        "3) Ничего не брать")
                         
 time.sleep(1)
 if user_choice1984 == "1":
