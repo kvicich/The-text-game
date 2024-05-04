@@ -204,6 +204,10 @@ def load_new_game():
             "scheme": 0
         }
 
+        # Проверяем существование папки, если её нет, создаем
+        if not os.path.exists('res/user'):
+            os.makedirs('res/user')
+
         # Запись пользовательских данных в файл user_data.json
         user_data = {"character": character}
         with open(user_data_path, "w", encoding="UTF-8") as file:
