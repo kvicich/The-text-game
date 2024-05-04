@@ -181,12 +181,12 @@ def load_new_game():
             health = random.randint(70, 100)
             strength = random.randint(60, 100)
             agility = random.randint(55, 100)
-            money = random.randint(130, 250)
+            money = random.randint(150, 500)
         elif difficulty == "normal":
             health = random.randint(40, 70)
             strength = random.randint(40, 70)
             agility = random.randint(40, 70)
-            money = random.randint(70, 150)
+            money = random.randint(90, 250)
         elif difficulty == "hard":
             health = random.randint(30, 50)
             strength = random.randint(20, 50)
@@ -313,7 +313,7 @@ def Main(): # Главная функция
                     clear_console()
                 os.remove(user_data_path)
                 print("Пользовательские данные удалены")
-                a - input()
+                a = input()
                 Main()
         elif debug_choice == "3":
             print("Пожалуйста подождите...")
