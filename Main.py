@@ -27,7 +27,6 @@ def load_splash():
     print(splash)
 
 load_splash()
-time.sleep(5)
 
 def load_user_data(): # Загружаем юзердату
     try:
@@ -142,7 +141,7 @@ def load_new_game():
     clear_console() # Моя спасительница
     checker = input("Вы уверены?\n Да\n Нет\n")
     if checker == 'Да':
-        load_splash
+        load_splash()
         time.sleep(1)
     elif checker == 'Нет':
         print("Возвращаюсь в главное меню...")
@@ -226,7 +225,7 @@ def load_new_game():
     load_last_game()
 
 def exit(): # Функция для выхода
-    print("Выходим...\n Подождите 3 секунды...")
+    print("Выходим...\n    Подождите 3 секунды...")
     time.sleep(3)
     sys.exit()
 
@@ -258,6 +257,77 @@ def Main(): # Главная функция
             Main()
     elif user_choice == "4":
         exit()
+    elif user_choice == "debug":
+        clear_console()
+        load_splash()
+        user_data = load_user_data() # Получаем всю юзердату
+        character_info = user_data.get('character', {})
+        name = character_info.get('name', 'Unknown')
+        money = character_info.get('money', 'Unknown')
+        health = character_info.get('health', 'Unknown')
+        strength = character_info.get('strength', 'Unknown')
+        agility = character_info.get('agility', 'Unknown')
+        steps = character_info.get('steps')
+        scheme = character_info.get('scheme')
+        clear_console()
+        print(f"Ваш персонаж:\nИмя: {name}\nМонеты: {money}\nСхемы {scheme}\nЗдоровье: {health}\nСила: {strength}\nЛовкость: {agility}\nШаги: {steps}\n")
+        print("Что вы хотите выбрать?")
+        debug_choice = input("1) Изменение характеристик персонажа\n2) Удалить даннные персонажа\n3) raw данные персонажа\n4) Запустить ивент\n5) В главное меню\n")
+        if debug_choice == "1":
+            harc = input("Какую характеристику персонажа хотите изменить? (Пример: name)\n")
+            load_splash()
+            harc2 = character_info.get(harc, 'Unknown')
+            clear_console()
+            print(f"Имя вашей характеристики: {harc}\nЗначение: {harc2}")
+            value = input("Введите значение для этой характеристики: ")
+            clear_console()
+            load_splash()
+            try:
+                value_int = int(value)
+            except(ValueError):
+                print("Вы ввели не число!")
+                a = input()
+                Main()
+            user_data['character'][harc] = value_int
+            save_user_data(user_data)
+            a = input()
+            Main()
+        elif debug_choice == "2":
+                clear_console()
+                checker = input("Вы уверены?\n Да\n Нет\n")
+                if checker == 'Да':
+                    load_splash()
+                    time.sleep(1)
+                elif checker == 'Нет':
+                    print("Возвращаюсь в главное меню...")
+                    time.sleep(1)
+                    Main()
+                else: 
+                    print("Некорректный выбор, возвращаюсь в главное меню...")
+                    time.sleep(1)
+                    Main()
+                    clear_console()
+                os.remove(user_data_path)
+                print("Пользовательские данные удалены")
+                a - input()
+                Main()
+        elif debug_choice == "3":
+            print("Пожалуйста подождите...")
+            time.sleep(3)
+            clear_console()
+            print(user_data)
+            a = input()
+            Main()
+        elif debug_choice == "4":
+            print("Добавим в ближайшем обновлении")
+            a = input()
+            Main()
+        elif debug_choice == "5":
+            Main()
+        else:
+            clear_console()
+            print("Некорректный выбор!\n Возвращаемся в главное меню...")
+
     else:
         clear_console()
         print("Некорректный выбор!\n Возвращаемся в главное меню...")
