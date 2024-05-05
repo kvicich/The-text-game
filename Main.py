@@ -104,14 +104,14 @@ def event_randomizer(): # Второй кусок кода на котором �
             exec(start_event_code, globals(), locals())
             break
                 
-        if steps > 100:
+        if scheme > 105:
             print("Вам незачем играть дальше")
             print("Дискорд проекта этого и многих других моих проектов: https://dsc.gg/xkwg3e2wUX")
             a = input()
             Main()
 
         # Если количество схем равно 100, загружаем и выполняем last_event.py
-        if scheme == 100:
+        if scheme > 100:
             file_path = 'res/event/'
             start_event_file = 'last_event.py'
             start_event_code = load_cog_data(file_path, start_event_file)
