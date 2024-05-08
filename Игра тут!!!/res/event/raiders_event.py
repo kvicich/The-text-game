@@ -11,17 +11,19 @@ user_choice = input("Что вы сделает?\n"
                     "3) Предложить деньги взамен на ваше спокойствие.\n")
 if user_choice == "1":
     print("Вы собрали своих товарищей и успешно отбили нападение.")
+    a = input
     print("Несмотря на потери, вы смогли защитить поселение.\n -10 health")
     health -= 10
     steps += 1
     user_data['character']['health'] = health
     user_data['character']['steps'] = steps
     save_user_data(user_data)
-    a = input()
+    b = input()
 elif user_choice == "2":
     print("Вы спрятались и избежали нападения, но ваше поселение понесло потери.")
-    print("Теперь вам придётся восстанавливать утраченное.\n -500 money")
-    money -= 500
+    time.sleep(3)
+    print("Теперь вам придётся восстанавливать утраченное.\n -1000 money")
+    money -= 1000
     steps += 1
     user_data['character']['money'] = money
     user_data['character']['steps'] = steps
@@ -29,6 +31,7 @@ elif user_choice == "2":
     a = input()
 elif user_choice == "3":
     print("Вы предложили деньги налётчикам в обмен на мирное урегулирование.")
+    time.sleep(2)
     print("Они приняли ваше предложение и ушли.\n -700 money")
     money -= 700
     steps += 1
