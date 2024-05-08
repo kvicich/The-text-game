@@ -73,6 +73,15 @@ def load_last_game():
         if agility > 100:
             agility = 100
             user_data['character']['agility'] = agility
+        if health < 0:
+            health = 0
+            user_data['character']['health'] = health
+        if strength < 0:
+            health = 0
+            user_data['character']['health'] = health
+        if agility < 0:
+            health = 0
+            user_data['character']['health'] = health
         save_user_data(user_data)
         clear_console()
         load_splash()
@@ -92,6 +101,7 @@ def event_randomizer(): # Второй кусок кода на котором �
     user_data = load_user_data()
     steps = user_data.get('character', {}).get('steps', 0)
     scheme = user_data.get('character', {}).get('scheme', 0)
+    health = user_data.get('character', {}).get('health', 0)
 
     # Пока не будет выполнено условие (steps != 0 и выбранный файл не start_event.py), продолжаем выбор случайного файла
     while True:
@@ -104,11 +114,19 @@ def event_randomizer(): # Второй кусок кода на котором �
             exec(start_event_code, globals(), locals())
             break
                 
-        if scheme > 105:
+        if scheme > 105: # Если количество схем больше 105 пишем дискордик и всё
             print("Вам незачем играть дальше")
             print("Дискорд проекта этого и многих других моих проектов: https://dsc.gg/xkwg3e2wUX")
             a = input()
             Main()
+
+        if health == 0:
+            print("Вы...")
+            time.sleep(0.5)
+            print("Умерли...")
+            time.sleep(3)
+            print("Это конец вашей истории")
+            os.remove('res/user/user_data.json')
 
         # Если количество схем равно 100, загружаем и выполняем last_event.py
         if scheme > 100:
