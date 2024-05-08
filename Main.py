@@ -131,10 +131,10 @@ def event_randomizer(): # Второй кусок кода на котором �
         # Если количество схем равно 100, загружаем и выполняем last_event.py
         if scheme > 100:
             file_path = 'res/event/'
-            start_event_file = 'last_event.py'
-            start_event_code = load_cog_data(file_path, start_event_file)
+            last_event_file = 'last_event.py'
+            last_event_code = load_cog_data(file_path, last_event_file)
             clear_console()
-            exec(start_event_code, globals(), locals())
+            exec(last_event_code, globals(), locals())
             break
         
         # Получаем список всех файлов в директории res/event/
@@ -247,6 +247,7 @@ def load_new_game():
     load_last_game()
 
 def exit(): # Функция для выхода
+    clear_console()
     print("Выходим...\n    Подождите 3 секунды...")
     time.sleep(3)
     sys.exit()
@@ -335,7 +336,7 @@ def Main(): # Главная функция
                 Main()
         elif debug_choice == "3":
             print("Пожалуйста подождите...")
-            time.sleep(3)
+            time.sleep(0.5)
             clear_console()
             print(user_data)
             a = input()
