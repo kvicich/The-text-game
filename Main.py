@@ -252,6 +252,90 @@ def exit(): # Функция для выхода
     time.sleep(3)
     sys.exit()
 
+def debug():
+    clear_console()
+    load_splash()
+    user_data = load_user_data() # Получаем всю юзердату
+    character_info = user_data.get('character', {})
+    name = character_info.get('name', 'Unknown')
+    money = character_info.get('money', 'Unknown')
+    health = character_info.get('health', 'Unknown')
+    strength = character_info.get('strength', 'Unknown')
+    agility = character_info.get('agility', 'Unknown')
+    steps = character_info.get('steps')
+    scheme = character_info.get('scheme')
+    file_path2 = "res/event/"
+    clear_console()
+    print(f"Ваш персонаж:\nИмя: {name}\nМонеты: {money}\nСхемы {scheme}\nЗдоровье: {health}\nСила: {strength}\nЛовкость: {agility}\nШаги: {steps}\n")
+    print("Что вы хотите выбрать?")
+    debug_choice = input("1) Изменение характеристик персонажа\n2) Удалить даннные персонажа\n3) raw данные персонажа\n4) Запустить ивент\n5) В главное меню\n")
+    
+    if debug_choice == "1":
+        harc = input("Какую характеристику персонажа хотите изменить? (Пример: name)\n")
+        load_splash()
+        harc2 = character_info.get(harc, 'Unknown')
+        clear_console()
+        print(f"Имя вашей характеристики: {harc}\nЗначение: {harc2}")
+        value = input("Введите значение для этой характеристики: ")
+        clear_console()
+        load_splash()
+        try:
+            value_int = int(value)
+        except(ValueError):
+            print("Вы ввели не число!")
+            a = input()
+            Main()
+        user_data['character'][harc] = value_int
+        save_user_data(user_data)
+        a = input()
+        Main()
+    elif debug_choice == "2":
+        clear_console()
+        checker = input("Вы уверены?\n Да\n Нет\n")
+        if checker == 'Да':
+            load_splash()
+            time.sleep(1)
+        elif checker == 'Нет':
+            print("Возвращаюсь в главное меню...")
+            time.sleep(1)
+            Main()
+        else: 
+            print("Некорректный выбор, возвращаюсь в главное меню...")
+            time.sleep(1)
+            Main()
+            clear_console()
+        os.remove(user_data_path)
+        print("Пользовательские данные удалены")
+        a = input()
+        Main()
+    elif debug_choice == "3":
+        print("Пожалуйста подождите...")
+        time.sleep(0.5)
+        clear_console()
+        print(user_data)
+        a = input()
+        Main()
+    elif debug_choice == "4":
+        user_choice = input("Введите имя файла ивента, либо exit если хотите выйти в главное меню\n")
+        if user_choice == "exit":
+            print("Переходим в главное меню...")
+            time.sleep(3)
+            Main()
+        else:
+            try:
+                cog_data = load_cog_data(file_path2, user_choice)
+                clear_console()
+                exec(cog_data, globals(), locals())
+            except FileNotFoundError:
+                print("Файл ивента не найден.")
+        a = input()
+        Main()
+    elif debug_choice == "5":
+        Main()
+    else:
+        clear_console()
+        print("Некорректный выбор!\n Возвращаемся в главное меню...")
+
 def Main(): # Главная функция
     clear_console()
     print("Версия игры: " + version)
@@ -281,76 +365,7 @@ def Main(): # Главная функция
     elif user_choice == "4":
         exit()
     elif user_choice == "debug":
-        clear_console()
-        load_splash()
-        user_data = load_user_data() # Получаем всю юзердату
-        character_info = user_data.get('character', {})
-        name = character_info.get('name', 'Unknown')
-        money = character_info.get('money', 'Unknown')
-        health = character_info.get('health', 'Unknown')
-        strength = character_info.get('strength', 'Unknown')
-        agility = character_info.get('agility', 'Unknown')
-        steps = character_info.get('steps')
-        scheme = character_info.get('scheme')
-        clear_console()
-        print(f"Ваш персонаж:\nИмя: {name}\nМонеты: {money}\nСхемы {scheme}\nЗдоровье: {health}\nСила: {strength}\nЛовкость: {agility}\nШаги: {steps}\n")
-        print("Что вы хотите выбрать?")
-        debug_choice = input("1) Изменение характеристик персонажа\n2) Удалить даннные персонажа\n3) raw данные персонажа\n4) Запустить ивент\n5) В главное меню\n")
-        if debug_choice == "1":
-            harc = input("Какую характеристику персонажа хотите изменить? (Пример: name)\n")
-            load_splash()
-            harc2 = character_info.get(harc, 'Unknown')
-            clear_console()
-            print(f"Имя вашей характеристики: {harc}\nЗначение: {harc2}")
-            value = input("Введите значение для этой характеристики: ")
-            clear_console()
-            load_splash()
-            try:
-                value_int = int(value)
-            except(ValueError):
-                print("Вы ввели не число!")
-                a = input()
-                Main()
-            user_data['character'][harc] = value_int
-            save_user_data(user_data)
-            a = input()
-            Main()
-        elif debug_choice == "2":
-                clear_console()
-                checker = input("Вы уверены?\n Да\n Нет\n")
-                if checker == 'Да':
-                    load_splash()
-                    time.sleep(1)
-                elif checker == 'Нет':
-                    print("Возвращаюсь в главное меню...")
-                    time.sleep(1)
-                    Main()
-                else: 
-                    print("Некорректный выбор, возвращаюсь в главное меню...")
-                    time.sleep(1)
-                    Main()
-                    clear_console()
-                os.remove(user_data_path)
-                print("Пользовательские данные удалены")
-                a = input()
-                Main()
-        elif debug_choice == "3":
-            print("Пожалуйста подождите...")
-            time.sleep(0.5)
-            clear_console()
-            print(user_data)
-            a = input()
-            Main()
-        elif debug_choice == "4":
-            print("Добавим в ближайшем обновлении")
-            a = input()
-            Main()
-        elif debug_choice == "5":
-            Main()
-        else:
-            clear_console()
-            print("Некорректный выбор!\n Возвращаемся в главное меню...")
-
+        debug()
     else:
         clear_console()
         print("Некорректный выбор!\n Возвращаемся в главное меню...")
