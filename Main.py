@@ -7,20 +7,20 @@ import json
 import random
 
 # Переменные
-version = "1.0" # Версия игры, не забывайте её обновлять
+version = "1.1" # Версия игры, не забывайте её обновлять
 story_file = "res/story.txt" # Один раз укажите если будете менять папку с ресурсами, и забейте хер
 user_data_path = "res/user/user_data.json" # Тут сохраняем папку с юзердатой
-splash_file = "res/splashes.txt"
+splash_file = "res/splashes.txt" # А это сплеши
+event_path = "res/event/" # Место с ивентами
 
-def clear_console():
+def clear_console(): # Чистилка консоли
     os_name = os.name # Узнаём имя операционки
     if os_name == 'nt':  # Windows
         os.system('cls')
     else:  # Unix/Linux/MacOS
         os.system('clear')
 
-def load_splash():
-    # Выбираем рандомный загрузочный сплеш
+def load_splash(): # Рандомные сплешики
     with open(splash_file, 'r', encoding='utf-8') as file:
         splashes = file.readlines()
     splash = random.choice(splashes).strip()
@@ -52,7 +52,7 @@ def load_cog_data(file_path, file): # Грузим ивентики
         cog_data = f.read()
     return cog_data
 
-def load_last_game():
+def load_last_game(): # Загружаем последнюю игру
     while True:
         clear_console()
         user_data = load_user_data() # Получаем всю юзердату чтобы просто отобразить её
@@ -116,7 +116,7 @@ def event_randomizer(): # Второй кусок кода на котором �
                 
         if scheme > 105: # Если количество схем больше 105 пишем дискордик и всё
             print("Вам незачем играть дальше")
-            print("Дискорд проекта этого и многих других моих проектов: https://dsc.gg/xkwg3e2wUX")
+            print("Дискорд проекта этого и многих других моих проектов: https://discord.gg/xkwg3e2wUX")
             a = input()
             Main()
 
@@ -128,8 +128,7 @@ def event_randomizer(): # Второй кусок кода на котором �
             print("Это конец вашей истории")
             os.remove('res/user/user_data.json')
 
-        # Если количество схем равно 100, загружаем и выполняем last_event.py
-        if scheme > 100:
+        if scheme > 100: # Если количество схем больше 100, загружаем и выполняем last_event.py
             file_path = 'res/event/'
             last_event_file = 'last_event.py'
             last_event_code = load_cog_data(file_path, last_event_file)
@@ -140,7 +139,7 @@ def event_randomizer(): # Второй кусок кода на котором �
         # Получаем список всех файлов в директории res/event/
         event_files = [file for file in os.listdir('res/event/') if file.endswith('.py')]
         
-        # Если файл start_event.py есть в списке, удаляем его
+        # Удаляем не нужные ивенты
         if 'start_event.py' in event_files:
             event_files.remove('start_event.py')
         if 'last_event.py' in event_files:
@@ -155,9 +154,9 @@ def event_randomizer(): # Второй кусок кода на котором �
             exec(cog_data, globals(), locals())
             break
 
-def load_new_game():
+def load_new_game(): # Загружаем новую игру
     clear_console() # Моя спасительница
-    checker = input("Вы уверены?\n Да\n Нет\n")
+    checker = input("Вы уверены? (Да Нет)\n")
     if checker == 'Да':
         load_splash()
         time.sleep(1)
@@ -252,7 +251,7 @@ def exit(): # Функция для выхода
     time.sleep(3)
     sys.exit()
 
-def debug():
+def debug(): # Дебааааааг (чтоб я не ебался с тестом ивентов)
     clear_console()
     load_splash()
     user_data = load_user_data() # Получаем всю юзердату
@@ -264,7 +263,6 @@ def debug():
     agility = character_info.get('agility', 'Unknown')
     steps = character_info.get('steps')
     scheme = character_info.get('scheme')
-    file_path2 = "res/event/"
     clear_console()
     print(f"Ваш персонаж:\nИмя: {name}\nМонеты: {money}\nСхемы {scheme}\nЗдоровье: {health}\nСила: {strength}\nЛовкость: {agility}\nШаги: {steps}\n")
     print("Что вы хотите выбрать?")
@@ -323,7 +321,7 @@ def debug():
             Main()
         else:
             try:
-                cog_data = load_cog_data(file_path2, user_choice)
+                cog_data = load_cog_data(event_path, user_choice)
                 clear_console()
                 exec(cog_data, globals(), locals())
             except FileNotFoundError:
@@ -336,7 +334,7 @@ def debug():
         clear_console()
         print("Некорректный выбор!\n Возвращаемся в главное меню...")
 
-def Main(): # Главная функция
+def Main(): # Главное меню
     clear_console()
     print("Версия игры: " + version)
     print("Начать игру?")
