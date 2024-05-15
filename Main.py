@@ -335,6 +335,14 @@ def debug(): # Дебааааааг (чтоб я не ебался с тесто
         Main()
     elif debug_choice == "5":
         Main()
+    elif debug_choice == "6":
+        for _ in range(100):
+            time.sleep(0.01)
+            print("Дебаг в дебаге")
+        time.sleep(3)
+        print("Вы сломали дебаг")
+        time.sleep(3)
+        exit()
     else:
         clear_console()
         print("Некорректный выбор!\n Возвращаемся в главное меню...")
@@ -369,6 +377,8 @@ def Main(): # Главное меню
         exit()
     elif user_choice == "debug":
         debug()
+    elif user_choice == "5":
+        print("Как-нибудь потом")
     else:
         clear_console()
         print("Некорректный выбор!\n Возвращаемся в главное меню...")
