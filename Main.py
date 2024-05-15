@@ -173,7 +173,7 @@ def load_new_game(): # Загружаем новую игру
 
     while True:
         # Выбор сложности
-        difficulty = input("Выберите сложность (1 - легкая, 2 - средняя, 3 - сложная): ")
+        difficulty = input("Выберите сложность (1 - легкая, 2 - средняя, 3 - сложная, 4 - кошмарная): ")
         if difficulty == "1":
             difficulty = "easy"
         elif difficulty == "2":
@@ -209,6 +209,11 @@ def load_new_game(): # Загружаем новую игру
             strength = random.randint(20, 50)
             agility = random.randint(30, 50)
             money = random.randint(0, 100)
+        elif difficulty == "extreme":
+            health = random.randint(7, 15)
+            strength = random.randint(10, 30)
+            agility = random.randint(1, 25)
+            money = 0
 
         # Создание словаря с характеристиками персонажа
         character = {
