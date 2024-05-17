@@ -7,7 +7,7 @@ import json
 import random
 
 # Переменные
-version = "1.1" # Версия игры, не забывайте её обновлять
+version = "1.2" # Версия игры, не забывайте её обновлять
 story_file = "res/story.txt" # Один раз укажите если будете менять папку с ресурсами, и забейте хер
 user_data_path = "res/user/user_data.json" # Тут сохраняем папку с юзердатой
 splash_file = "res/splashes.txt" # А это сплеши
@@ -35,7 +35,7 @@ def load_user_data(): # Загружаем юзердату
         return user_data
     except FileNotFoundError:
         clear_console()
-        print("Файл сохранения пользователя не найден.")
+        print("Файл сохранения пользователя не найден, код ошибки: 0x01.")
         time.sleep(1) 
         Main()
 
@@ -45,7 +45,7 @@ def save_user_data(user_data): # Сохраняем юзердату
             json.dump(user_data, file)
             print("Ваши данные сохранены")
     except Exception as e:
-        print(f"Ошибка при сохранении данных пользователя: {e}")
+        print(f"Ошибка сохранения данных пользователя: 0x02\nТехническая информация: {e}")
 
 def load_cog_data(file_path, file): # Грузим ивентики
     with open(f'{file_path}{file}', 'r', encoding='UTF-8') as f:
@@ -55,15 +55,18 @@ def load_cog_data(file_path, file): # Грузим ивентики
 def load_last_game(): # Загружаем последнюю игру
     while True:
         clear_console()
-        user_data = load_user_data() # Получаем всю юзердату чтобы просто отобразить её
-        character_info = user_data.get('character', {})
-        name = character_info.get('name', 'Unknown')
-        money = character_info.get('money', 'Unknown')
-        health = character_info.get('health', 'Unknown')
-        strength = character_info.get('strength', 'Unknown')
-        agility = character_info.get('agility', 'Unknown')
-        steps = character_info.get('steps')
-        scheme = character_info.get('scheme')
+        try:
+            user_data = load_user_data() # Получаем всю юзердату чтобы просто отобразить её
+            character_info = user_data.get('character', {})
+            name = character_info.get('name', 'Unknown')
+            money = character_info.get('money', 'Unknown')
+            health = character_info.get('health', 'Unknown')
+            strength = character_info.get('strength', 'Unknown')
+            agility = character_info.get('agility', 'Unknown')
+            steps = character_info.get('steps')
+            scheme = character_info.get('scheme')
+        except Exception as e:
+            print(f"Ошибка загрузки юзердаты, код ошибки: 0x04\nТехническая информация: {e}")
         if health > 100: # Не будет вам 500 здоровья
             health = 100
             user_data['character']['health'] = health
@@ -98,10 +101,13 @@ def load_last_game(): # Загружаем последнюю игру
 def event_randomizer(): # Второй кусок кода на котором держится игра
     clear_console()
     load_splash()
-    user_data = load_user_data()
-    steps = user_data.get('character', {}).get('steps', 0)
-    scheme = user_data.get('character', {}).get('scheme', 0)
-    health = user_data.get('character', {}).get('health', 0)
+    try:
+        user_data = load_user_data()
+        steps = user_data.get('character', {}).get('steps', 0)
+        scheme = user_data.get('character', {}).get('scheme', 0)
+        health = user_data.get('character', {}).get('health', 0)
+    except Exception as e:
+        print(f"Ошибка загрузки юзердаты, код ошибки: 0x04\nТехническая информация: {e}")
 
     # Пока не будет выполнено условие (steps != 0 и выбранный файл не start_event.py), продолжаем выбор случайного файла
     while True:
@@ -137,7 +143,7 @@ def event_randomizer(): # Второй кусок кода на котором �
             break
         
         # Получаем список всех файлов в директории res/event/
-        event_files = [file for file in os.listdir('res/event/') if file.endswith('.py')]
+        event_files = [file for file in os.listdir(event_path) if file.endswith('.py')]
         
         # Удаляем не нужные ивенты
         if 'start_event.py' in event_files:
@@ -148,7 +154,7 @@ def event_randomizer(): # Второй кусок кода на котором �
         # Если список файлов не пуст и все они не start_event.py, выбираем случайный файл и загружаем его
         if event_files:
             random_event_file = random.choice(event_files)
-            file_path = 'res/event/'
+            file_path = event_path
             cog_data = load_cog_data(file_path, random_event_file)
             clear_console()
             exec(cog_data, globals(), locals())
@@ -180,6 +186,8 @@ def load_new_game(): # Загружаем новую игру
             difficulty = "normal"
         elif difficulty == "3":
             difficulty = "hard"
+        elif difficulty == "4":
+            difficulty = "extreme"
         else:
             print("Некорректный выбор сложности! Попробуйте снова.")
             continue
@@ -214,6 +222,8 @@ def load_new_game(): # Загружаем новую игру
             strength = random.randint(10, 30)
             agility = random.randint(1, 25)
             money = 0
+        else:
+            print("Неизвестная ошибка. Код: 0x03")
 
         # Создание словаря с характеристиками персонажа
         character = {
@@ -346,6 +356,8 @@ def debug(): # Дебааааааг (чтоб я не ебался с тесто
     else:
         clear_console()
         print("Некорректный выбор!\n Возвращаемся в главное меню...")
+        time.sleep(1)
+        Main()
 
 def Main(): # Главное меню
     clear_console()
@@ -381,7 +393,7 @@ def Main(): # Главное меню
         print("Как-нибудь потом")
     else:
         clear_console()
-        print("Некорректный выбор!\n Возвращаемся в главное меню...")
+        print("Некорректный выбор!\n    Возвращаемся в главное меню...")
         time.sleep(1)
         Main() # Рекурсия подъехала
 
