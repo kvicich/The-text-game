@@ -7,7 +7,7 @@ import json
 import random
 
 # Переменные
-version = "1.1" # Версия игры, не забывайте её обновлять
+version = "1.2" # Версия игры, не забывайте её обновлять
 story_file = "res/story.txt" # Один раз укажите если будете менять папку с ресурсами, и забейте хер
 user_data_path = "res/user/user_data.json" # Тут сохраняем папку с юзердатой
 splash_file = "res/splashes.txt" # А это сплеши
@@ -137,7 +137,7 @@ def event_randomizer(): # Второй кусок кода на котором �
             break
         
         # Получаем список всех файлов в директории res/event/
-        event_files = [file for file in os.listdir('res/event/') if file.endswith('.py')]
+        event_files = [file for file in os.listdir(event_path) if file.endswith('.py')]
         
         # Удаляем не нужные ивенты
         if 'start_event.py' in event_files:
@@ -148,7 +148,7 @@ def event_randomizer(): # Второй кусок кода на котором �
         # Если список файлов не пуст и все они не start_event.py, выбираем случайный файл и загружаем его
         if event_files:
             random_event_file = random.choice(event_files)
-            file_path = 'res/event/'
+            file_path = event_path
             cog_data = load_cog_data(file_path, random_event_file)
             clear_console()
             exec(cog_data, globals(), locals())
@@ -180,6 +180,8 @@ def load_new_game(): # Загружаем новую игру
             difficulty = "normal"
         elif difficulty == "3":
             difficulty = "hard"
+        elif difficulty == "4":
+            difficulty = "extreme"
         else:
             print("Некорректный выбор сложности! Попробуйте снова.")
             continue
@@ -214,6 +216,8 @@ def load_new_game(): # Загружаем новую игру
             strength = random.randint(10, 30)
             agility = random.randint(1, 25)
             money = 0
+        else:
+            print("Неизвестная ошибка. Код: 0x03")
 
         # Создание словаря с характеристиками персонажа
         character = {
@@ -381,7 +385,7 @@ def Main(): # Главное меню
         print("Как-нибудь потом")
     else:
         clear_console()
-        print("Некорректный выбор!\n Возвращаемся в главное меню...")
+        print("Некорректный выбор!\n    Возвращаемся в главное меню...")
         time.sleep(1)
         Main() # Рекурсия подъехала
 
