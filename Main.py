@@ -306,11 +306,11 @@ def debug(): # Дебааааааг (чтоб я не ебался с тесто
         except(ValueError):
             print("Вы ввели не число!")
             a = input()
-            Main()
+            debug()
         user_data['character'][harc] = value_int
         save_user_data(user_data)
         a = input()
-        Main()
+        debug()
     elif debug_choice == "2":
         clear_console()
         checker = input("Вы уверены?\n Да\n Нет\n")
@@ -318,9 +318,9 @@ def debug(): # Дебааааааг (чтоб я не ебался с тесто
             load_splash()
             time.sleep(1)
         elif checker == 'Нет':
-            print("Возвращаюсь в главное меню...")
+            print("Возвращаюсь в дебаг меню...")
             time.sleep(1)
-            Main()
+            debug()
         else: 
             print("Некорректный выбор, возвращаюсь в главное меню...")
             time.sleep(1)
@@ -336,7 +336,7 @@ def debug(): # Дебааааааг (чтоб я не ебался с тесто
         clear_console()
         print(user_data)
         a = input()
-        Main()
+        debug()
     elif debug_choice == "4":
         user_choice = input("Введите имя файла ивента, либо exit если хотите выйти в главное меню\n")
         if user_choice == "exit":
@@ -351,7 +351,7 @@ def debug(): # Дебааааааг (чтоб я не ебался с тесто
             except FileNotFoundError:
                 print("Файл ивента не найден.")
         a = input()
-        Main()
+        debug()
     elif debug_choice == "5":
         Main()
     elif debug_choice == "6":
@@ -364,9 +364,9 @@ def debug(): # Дебааааааг (чтоб я не ебался с тесто
         exit()
     else:
         clear_console()
-        print("Некорректный выбор!\n Возвращаемся в главное меню...")
+        print("Некорректный выбор!\n    Возвращаемся в дебаг меню...")
         time.sleep(1)
-        Main()
+        debug()
 
 def Main(): # Главное меню
     clear_console()
