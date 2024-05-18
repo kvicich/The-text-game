@@ -7,7 +7,7 @@ import json
 import random
 
 # Переменные
-version = "1.2" # Версия игры, не забывайте её обновлять
+version = "1.3" # Версия игры, не забывайте её обновлять
 story_file = "res/story.txt" # Один раз укажите если будете менять папку с ресурсами, и забейте хер
 user_data_path = "res/user/user_data.json" # Тут сохраняем папку с юзердатой
 splash_file = "res/splashes.txt" # А это сплеши
@@ -67,6 +67,15 @@ def load_last_game(): # Загружаем последнюю игру
             scheme = character_info.get('scheme')
         except Exception as e:
             print(f"Ошибка загрузки юзердаты, код ошибки: 0x04\nТехническая информация: {e}")
+        try:
+            money = int(money)
+            health = int(health)
+            strength = int(strength)
+            agility = int(agility)
+            steps = int(steps)
+            scheme = int(scheme)
+        except ValueError as e:
+            print(f"Ошибка преобразования данных, код ошибки: 0x05\nТехническая информация: {e}")
         if health > 100: # Не будет вам 500 здоровья
             health = 100
             user_data['character']['health'] = health
