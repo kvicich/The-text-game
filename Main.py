@@ -9,7 +9,7 @@ import random
 # Переменные
 version = "1.3" # Версия игры, не забывайте её обновлять
 story_file = "res/story.txt" # Один раз укажите если будете менять папку с ресурсами, и забейте хер
-user_data_path = "res/user/user_data.json" # Тут сохраняем папку с юзердатой
+user_data_path = "res/user/user_data.json" # Тут сохраняем местоположение юзердаты
 splash_file = "res/splashes.txt" # А это сплеши
 event_path = "res/event/" # Место с ивентами
 
@@ -25,6 +25,10 @@ def load_splash(): # Рандомные сплешики
         splashes = file.readlines()
     splash = random.choice(splashes).strip()
     print(splash)
+
+def dead():
+    os.remove(user_data_path)
+    print("Пользовательские данные удалены")
 
 load_splash()
 

@@ -23,9 +23,9 @@ if user_choice == "1":
         a = input()
     else:
         print("Вы вошли в здание, но были внезапно атакованы засадой.")
-        print("Вас оглушили и обокрали, вскоре вы пришли в себя.\n -30 hp -10 money")
+        print("Вас оглушили и обокрали, вскоре вы пришли в себя.\n -30 hp -150 money")
         health -= 30
-        money -= 10
+        money -= 150
         steps += 1
         user_data['character']['money'] = money
         user_data['character']['health'] = health

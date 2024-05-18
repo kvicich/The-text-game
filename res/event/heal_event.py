@@ -21,7 +21,7 @@ if user_choice1984 == "1":
     a = input()
 elif user_choice1984 == "2":
     print("Ампула оказалась с ядом, вы умерли")
-    os.remove("res/user/user_data.json")
+    dead()
     a = input()
 elif user_choice1984 =="3":
     print("Да и не надо оно мне...")
