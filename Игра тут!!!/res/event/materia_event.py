@@ -26,7 +26,7 @@ if user_choice == "1":
             money += 200
         else:
             money += 300
-        print(f"Когда вы пришли домой, вы продали их за {money} монет. +{money} money")
+        print(f"Когда вы пришли домой, вы продали их за {money} монет.\n +{money} money")
         steps += 1
         user_data['character']['money'] = money
         user_data['character']['steps'] = steps
@@ -41,7 +41,7 @@ if user_choice == "1":
         time.sleep(1.45)
         print("Через несколько минут вы слышите крик: *ОСАДА*")
         time.sleep(0.5)
-        print("Прибежав к другу, вы спасаете его, отделавшись ушибами. -30 health")
+        print("Прибежав к другу, вы спасаете его, отделавшись ушибами.\n -30 health")
         health -= 30
         steps += 1
         user_data['character']['health'] = health

@@ -15,7 +15,7 @@ if user_choice == "1":
         print("Вы оказались слишком слабым...\n")
         time.sleep(1)
         print("Вас съели...")
-        os.remove("res/user/user_data.json")
+        dead()
         a = input()
     else:
         print("Вам удалось отбится но вас поцарапали.\n -10 hp + 3 strength")
@@ -34,11 +34,16 @@ elif user_choice == "2":
         user_data['character']['agility'] = agility
         save_user_data(user_data)
         a = input()
+    else:
+        print("Вам не удалось убежать...")
+        time.sleep(2)
+        print("Вы умерли.")
+        dead()
 elif user_choice == "3":
     print("Ты и правда думал что это поможет?")
     time.sleep(1)
     print("Вы умерли")
-    os.remove("res/user/user_data.json")
+    dead()
 else: 
     print("Некорректный выбор!!!")
     time.sleep(3)

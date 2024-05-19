@@ -49,7 +49,28 @@ def save_user_data(user_data): # Сохраняем юзердату
             json.dump(user_data, file)
             print("Ваши данные сохранены")
     except Exception as e:
-        print(f"Ошибка сохранения данных пользователя: 0x02\nТехническая информация: {e}")
+        print(f"Ошибка сохранения данных пользователя, код ошибки: 0x02\nТехническая информация: {e}")
+
+def load_played_events():
+    try:
+        if os.path.exists('played_events.json'):
+            with open('played_events.json', 'r') as f:
+                data = json.load(f)
+                if isinstance(data, list):
+                    return data
+                else:
+                    print("Ошибка: Ожидался список сыгранных ивентов, но получен другой тип данных, код ошибки: 0x012")
+                    return []
+    except Exception as e:
+        print(f"Ошибка загрузки сыгранных ивентов, код ошибки: 0x013\nТехническая информация: {e}")
+    return []
+
+def save_played_events(played_events):
+    try:
+        with open('played_events.json', 'w') as f:
+            json.dump(played_events, f)
+    except Exception as e:
+        print(f"Ошибка сохранения сыгранных ивентов, код ошибки: 0x022\nТехническая информация: {e}")
 
 def load_cog_data(file_path, file): # Грузим ивентики
     with open(f'{file_path}{file}', 'r', encoding='UTF-8') as f:
@@ -59,6 +80,7 @@ def load_cog_data(file_path, file): # Грузим ивентики
 def load_last_game(): # Загружаем последнюю игру
     while True:
         clear_console()
+        load_splash()
         try:
             user_data = load_user_data() # Получаем всю юзердату чтобы просто отобразить её
             character_info = user_data.get('character', {})
@@ -111,7 +133,7 @@ def load_last_game(): # Загружаем последнюю игру
             Main()
         event_randomizer()
 
-def event_randomizer(): # Второй кусок кода на котором держится игра
+def event_randomizer():
     clear_console()
     load_splash()
     try:
@@ -122,18 +144,18 @@ def event_randomizer(): # Второй кусок кода на котором �
     except Exception as e:
         print(f"Ошибка загрузки юзердаты, код ошибки: 0x04\nТехническая информация: {e}")
 
-    # Пока не будет выполнено условие (steps != 0 и выбранный файл не start_event.py), продолжаем выбор случайного файла
+    played_events = load_played_events()
+
     while True:
-        # Если количество шагов равно 0, загружаем и выполняем start_event.py
         if steps == 0:
-            file_path = 'res/event/'
+            file_path = event_path
             start_event_file = 'start_event.py'
             start_event_code = load_cog_data(file_path, start_event_file)
             clear_console()
             exec(start_event_code, globals(), locals())
             break
-                
-        if scheme > 105: # Если количество схем больше 105 пишем дискордик и всё
+
+        if scheme > 105:
             print("Вам незачем играть дальше")
             print("Дискорд проекта этого и многих других моих проектов: https://discord.gg/xkwg3e2wUX")
             a = input()
@@ -147,46 +169,51 @@ def event_randomizer(): # Второй кусок кода на котором �
             print("Это конец вашей истории")
             dead()
 
-        if scheme > 100: # Если количество схем больше 100, загружаем и выполняем last_event.py
-            file_path = 'res/event/'
+        if scheme > 100:
+            file_path = event_path
             last_event_file = 'last_event.py'
             last_event_code = load_cog_data(file_path, last_event_file)
             clear_console()
             exec(last_event_code, globals(), locals())
             break
-        
-        # Получаем список всех файлов в директории res/event/
+
         event_files = [file for file in os.listdir(event_path) if file.endswith('.py')]
-        
-        # Удаляем не нужные ивенты
+
         if 'start_event.py' in event_files:
             event_files.remove('start_event.py')
         if 'last_event.py' in event_files:
             event_files.remove('last_event.py')
 
-        # Если список файлов не пуст и все они не start_event.py, выбираем случайный файл и загружаем его
-        if event_files:
-            random_event_file = random.choice(event_files)
+        # Исключаем последние четыре сыгранные ивента из выбора
+        recent_events = played_events[-4:] if len(played_events) >= 4 else played_events
+        available_events = [file for file in event_files if file not in recent_events]
+
+        if available_events:
+            random_event_file = random.choice(available_events)
             file_path = event_path
             cog_data = load_cog_data(file_path, random_event_file)
             clear_console()
             exec(cog_data, globals(), locals())
+            # Добавляем текущий ивент в список сыгранных ивентов
+            played_events.append(random_event_file)
+            save_played_events(played_events)
             break
 
 def load_new_game(): # Загружаем новую игру
     clear_console() # Моя спасительница
-    checker = input("Вы уверены? (Да Нет)\n")
-    if checker == 'Да':
-        load_splash()
-        time.sleep(1)
-    elif checker == 'Нет':
-        print("Возвращаюсь в главное меню...")
-        time.sleep(1)
-        Main()
-    else: 
-        print("Некорректный выбор, возвращаюсь в главное меню...")
-        time.sleep(1)
-        Main()
+    if os.path.isfile(user_data_path):
+        checker = input("Вы уверены? (Да Нет)\n")
+        if checker == 'Да':
+            load_splash()
+            time.sleep(1)
+        elif checker == 'Нет':
+            print("Возвращаюсь в главное меню...")
+            time.sleep(1)
+            Main()
+        else: 
+            print("Некорректный выбор, возвращаюсь в главное меню...")
+            time.sleep(1)
+            Main()
     clear_console()
     print("Создание персонажа")
 

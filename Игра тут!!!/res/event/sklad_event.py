@@ -10,10 +10,10 @@ user_choice = input("Что вы сделаете?\n"
 if user_choice == "1":
     print("Вы решаете исследовать склад.")
     time.sleep(1.5)
-    print("После длительного поиска вы находите схемы и данные, которые могут помочь разгадать причину сбоя системы 'Новой Эры'.\n +1 scheme")
     steps += 1
-    scheme += 1
+    scheme += random.randint(1, 3)
     user_data['character']['steps'] = steps
+    print(f"После длительного поиска вы находите схемы и данные, которые могут помочь разгадать причину сбоя системы 'Новой Эры'.\n +{scheme} scheme")
     user_data['character']['scheme'] = scheme
     save_user_data(user_data)
     a = input()
