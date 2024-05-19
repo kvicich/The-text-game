@@ -3,11 +3,11 @@
 
 Если у вас Windows, то:
 Скачиваете игру в ветке игры в канале #скачать-игру на сервере https://discord.gg/xkwg3e2wUX
-Далее просто распакоувывайте в любую папку и запускаете через файл Main.exe
+Далее просто распакуйте в любую папку и запускаете через файл Main.exe
 
 Если Android/Linux/Mac OS:
 Тут всё будет через терминал, если у вас андройд установите в начале Termux, играть будете через него.
 Открывайте терминал и вводите эти команды: apt update && pkg update 
-pkg install git && git clone https://github.com/kvicich/the-text-game
+apt install git && git clone https://github.com/kvicich/the-text-game
 apt install python
 cd the-text-game && python Main.py # Эта команда используется для запуска игры
