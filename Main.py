@@ -5,14 +5,46 @@ import sys
 import time
 import json
 import random
+import configparser
 
-# Переменные
-version = "1.3" # Версия игры, не забывайте её обновлять
-story_file = "res/story.txt" # Один раз укажите если будете менять папку с ресурсами, и забейте хер
-user_data_path = "res/user/user_data.json" # Тут сохраняем местоположение юзердаты
-splash_file = "res/splashes.txt" # А это сплеши
-event_path = "res/event/" # Место с ивентами
-played_event_path = "res/"
+# Путь к файлу настроек
+settings_file = 'res/user/base.cfg'
+
+# Базовые настройки
+default_settings = {
+    'Game': {
+        'version': '1.4',
+        'story_file': 'res/story.txt',
+        'user_data_path': 'res/user/user_data.json',
+        'splash_file': 'res/splashes.txt',
+        'event_path': 'res/event/',
+        'played_event_path': 'res/played_events.json'
+    }
+}
+
+def create_default_settings(config_file):
+    config = configparser.ConfigParser()
+    config.read_dict(default_settings)
+    with open(config_file, 'w') as file:
+        config.write(file)
+
+def load_settings(config_file):
+    config = configparser.ConfigParser()
+    if not os.path.exists(config_file):
+        create_default_settings(config_file)
+    config.read(config_file)
+    return config
+
+# Загружаем настройки
+config = load_settings(settings_file)
+
+# Присваиваем переменные из конфигурационного файла
+version = config['Game']['version']
+story_file = config['Game']['story_file']
+user_data_path = config['Game']['user_data_path']
+splash_file = config['Game']['splash_file']
+event_path = config['Game']['event_path']
+played_event_path = config['Game']['played_event_path']
 
 def clear_console(): # Чистилка консоли
     os_name = os.name # Узнаём имя операционки
@@ -54,8 +86,8 @@ def save_user_data(user_data): # Сохраняем юзердату
 
 def load_played_events():
     try:
-        if os.path.exists('played_events.json'):
-            with open('played_events.json', 'r') as f:
+        if os.path.exists(played_events_path):
+            with open(played_events_path, 'r') as f:
                 data = json.load(f)
                 if isinstance(data, list):
                     return data
@@ -68,7 +100,7 @@ def load_played_events():
 
 def save_played_events(played_events):
     try:
-        with open('played_events.json', 'w') as f:
+        with open(played_events_path, 'w') as f:
             json.dump(played_events, f)
     except Exception as e:
         print(f"Ошибка сохранения сыгранных ивентов, код ошибки: 0x022\nТехническая информация: {e}")

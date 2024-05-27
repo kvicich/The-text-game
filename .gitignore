@@ -3,3 +3,4 @@ dist
 Main.spec
 user_data.json
 played_events.json
+settings.cfg
