@@ -12,6 +12,7 @@ story_file = "res/story.txt" # Один раз укажите если буде�
 user_data_path = "res/user/user_data.json" # Тут сохраняем местоположение юзердаты
 splash_file = "res/splashes.txt" # А это сплеши
 event_path = "res/event/" # Место с ивентами
+played_event_path = "res/"
 
 def clear_console(): # Чистилка консоли
     os_name = os.name # Узнаём имя операционки
@@ -92,7 +93,7 @@ def load_last_game(): # Загружаем последнюю игру
             steps = character_info.get('steps')
             scheme = character_info.get('scheme')
         except Exception as e:
-            print(f"Ошибка загрузки юзердаты, код ошибки: 0x04\nТехническая информация: {e}")
+            print(f"Ошибка загрузки юзердаты, код ошибки: 0x014\nТехническая информация: {e}")
         try:
             money = int(money)
             health = int(health)
@@ -101,7 +102,7 @@ def load_last_game(): # Загружаем последнюю игру
             steps = int(steps)
             scheme = int(scheme)
         except ValueError as e:
-            print(f"Ошибка преобразования данных, код ошибки: 0x05\nТехническая информация: {e}")
+            print(f"Ошибка преобразования данных, код ошибки: 0x04\nТехническая информация: {e}")
         if health > 100: # Не будет вам 500 здоровья
             health = 100
             user_data['character']['health'] = health
@@ -131,7 +132,8 @@ def load_last_game(): # Загружаем последнюю игру
         main_1 = input("Чтобы перейти в главное меню нажмите 5: ")
         if main_1 == "5":
             Main()
-        event_randomizer()
+        else:
+            event_randomizer()
 
 def event_randomizer():
     clear_console()
@@ -166,7 +168,7 @@ def event_randomizer():
             time.sleep(0.5)
             print("Умерли...")
             time.sleep(3)
-            print("Это конец вашей истории")
+            print("Это конец вашей истории.")
             dead()
 
         if scheme > 100:
@@ -422,7 +424,7 @@ def Main(): # Главное меню
                 a = input()
                 Main()
         except FileNotFoundError:
-            print(f"Файл '{story_file}' не найден.")
+            print(f"Файл '{story_file}' не найден. Код ошибки: 0x015")
             a = input()
             Main()
     elif user_choice == "4":
@@ -431,6 +433,8 @@ def Main(): # Главное меню
         debug()
     elif user_choice == "5":
         print("Как-нибудь потом")
+        a = input()
+        Main()
     else:
         clear_console()
         print("Некорректный выбор!\n    Возвращаемся в главное меню...")

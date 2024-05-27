@@ -23,6 +23,7 @@ if user_choice == "1":
     print(f"Вы успешно выбрались из подземелья. -10 health +{money} money")
     user_data['character']['money'] = money
     save_user_data(user_data)
+    a = input()
 elif user_choice == "2":
     print("Вы пытаетесь выбраться из подземелья.")
     time.sleep(1)
@@ -32,6 +33,7 @@ elif user_choice == "2":
     user_data['character']['health'] = health
     user_data['character']['steps'] = steps
     save_user_data(user_data)
+    a = input()
 else:
     print("Вы сделали некорректный выбор!")
     time.sleep(3)
