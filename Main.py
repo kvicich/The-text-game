@@ -44,7 +44,7 @@ story_file = config['Game']['story_file']
 user_data_path = config['Game']['user_data_path']
 splash_file = config['Game']['splash_file']
 event_path = config['Game']['event_path']
-played_event_path = config['Game']['played_event_path']
+played_events_path = config['Game']['played_event_path']
 
 def clear_console(): # Чистилка консоли
     os_name = os.name # Узнаём имя операционки
